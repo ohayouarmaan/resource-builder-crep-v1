@@ -52,6 +52,7 @@ class Project {
   async createResource() {
     //TODO: Add a simple switch case which will check the resource type and create and run the resource accordingly, also make sure
     //to make it memory effecient do not make it so that a lot of useless objects are created which are not needed at all.
+    //we can lazily import the functions, based on the resourceType to make sure that we are not creating memory overhead if not needed.
   }
 }
 

@@ -91,4 +91,13 @@ export default class ServerResource {
             }
         });
     }
+
+    run() {
+        if(this.config != undefined){
+            const port: number = typeof this.config.port == "string" ? parseInt(this.config.port) : this.config.port
+            this.server.listen(port, '0.0.0.0', () => {
+                console.log(`[DEBUG]: SERVER LISTENING ON PORT http://0.0.0.0:${this.config?.port}`);
+            });
+        }
+    }
 }
