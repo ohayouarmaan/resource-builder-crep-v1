@@ -10,7 +10,7 @@
       {
         "path": "/user",
         "method": "GET",
-        "query": [{ "name": "id", "type": "string" }],
+        "params": [{ "name": "id", "type": "string" }],
         "middlewares": ["isSignedIn", "giveUserDetails"]
       },
       {
@@ -19,7 +19,7 @@
         "routes": [
           {
             "path": "/user",
-            "query": [{ "name": "id", "type": "string" }],
+            "params": [{ "name": "id", "type": "string" }],
             "middlewares": ["isSignedIn", "giveUserDetails"]
           }
         ]

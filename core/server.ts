@@ -13,7 +13,7 @@ enum Methods {
 interface IRoute {
     path: string;
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | null;
-    query: {
+    params: {
         [k: string]: string
     }[];
     middlewares: string[];
@@ -68,17 +68,23 @@ export default class ServerResource {
         }
         const routes = _routes || this.routes;
         routes.forEach(route => {
+            let route_name = `/${route.path}`;
+            for(const params of Object.keys(route.params)) {
+                route_name += `/:${params}`
+            }
+            route_name = route_name + "/";
+
             if (route.routes.length != 0 && route.method != null) {
                 const logic_functions: ((req: Request, res: Response) => any)[] = [];
                 for (const logic_name of Object.keys(this.logic)) {
                     logic_functions.push(this.logic[logic_name].get_logic() as ((req: Request, res: Response) => any));
                 }
-                methods[route.method](route.path, ...logic_functions);
+                methods[route.method](route_name, ...logic_functions);
             } else {
                 const _router = express.Router();
                 this.parse_routes(router, route.routes);
                 if(router != undefined) {
-                    router.use(route.path, _router)
+                    router.use(route_name, _router)
                 } else {
                     this.server.use(route.path, _router);
                 }
