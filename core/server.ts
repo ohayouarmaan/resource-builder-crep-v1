@@ -40,10 +40,6 @@ export default class ServerResource {
     register_config(config: IServerConfig) {
         this.config = config
         for (const key of Object.keys(this.config.global_vars)) this.server.set(key, this.config.global_vars[key]);
-    }
-
-    parse_config() {
-        assert(this.config != undefined, "No config passed.");
         this.routes = this.config.routes;
     }
 
