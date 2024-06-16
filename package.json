@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run:dev": "npx ts-node main.ts"
+    "start:dev": "npx ts-node main.ts",
+    "prettify": "npx prettier --write ."
   },
   "keywords": [],
   "author": "",

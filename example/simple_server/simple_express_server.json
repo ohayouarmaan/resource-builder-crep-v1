@@ -1,36 +1,24 @@
 {
-    "resource_type": "express",
-    "config": {
-        "port": 3003,
+  "resource_type": "express",
+  "config": {
+    "port": 3003,
+    "routes": [
+      {
+        "path": "/user",
+        "query": [{ "name": "id", "type": "string" }],
+        "middlewares": ["isSignedIn", "giveUserDetails"]
+      },
+      {
+        "path": "/admin",
+        "middlewares": ["isAdmin"],
         "routes": [
-            {
-                "path": "/user",
-                "query": [
-                    { "name": "id", "type": "string" }
-                ],
-                "middlewares": [
-                    "isSignedIn",
-                    "giveUserDetails"
-                ]
-            },
-            {
-                "path": "/admin",
-                "middlewares": [
-                    "isAdmin"
-                ],
-                "routes": [
-                    {
-                        "path": "/user",
-                        "query": [
-                            { "name": "id", "type": "string" }
-                        ],
-                        "middlewares": [
-                            "isSignedIn",
-                            "giveUserDetails"
-                        ]
-                    }
-                ]
-            }
+          {
+            "path": "/user",
+            "query": [{ "name": "id", "type": "string" }],
+            "middlewares": ["isSignedIn", "giveUserDetails"]
+          }
         ]
-    }
+      }
+    ]
+  }
 }
