@@ -6,6 +6,7 @@ class Project {
   public name: string;
   public resource: Resource;
   public logic: Record<string, string> | null;
+
   constructor(
     name: string,
     resource: Resource,
@@ -15,6 +16,7 @@ class Project {
     this.resource = resource;
     this.logic = logic;
   }
+
   static async readDirectory(projectPath: string) {
     try {
       const files = await readdir(projectPath);
@@ -45,6 +47,10 @@ class Project {
     } catch (e) {
       throw new Error("No such project exists.");
     }
+  }
+
+  async createResource() {
+
   }
 }
 
