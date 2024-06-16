@@ -2,9 +2,14 @@
   "resource_type": "express",
   "config": {
     "port": 3003,
+    
+    "global_vars": {
+      "debug": true
+    },
     "routes": [
       {
         "path": "/user",
+        "method": "GET",
         "query": [{ "name": "id", "type": "string" }],
         "middlewares": ["isSignedIn", "giveUserDetails"]
       },
