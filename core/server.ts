@@ -10,26 +10,26 @@ enum Methods {
     DELETE = "DELETE"
 }
 
-interface IRoute {
+export interface IServerRoute {
     path: string;
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | null;
     params: {
         [k: string]: string
     }[];
     middlewares: string[];
-    routes: IRoute[];
+    routes: IServerRoute[];
 }
 
-interface IConfig {
+export interface IServerConfig {
     port: string | number;
-    routes: IRoute[];
+    routes: IServerRoute[];
     global_vars: Record<string, object>;
 }
 
 export default class ServerResource {
     private server: express.Express;
-    public routes: IRoute[] = [];
-    private config: IConfig | undefined;
+    public routes: IServerRoute[] = [];
+    private config: IServerConfig | undefined;
     private logic: Record<string, Logic>;
 
     constructor(logic: Record<string, Logic>) {
@@ -37,7 +37,7 @@ export default class ServerResource {
         this.logic = logic;
     }
 
-    register_config(config: IConfig) {
+    register_config(config: IServerConfig) {
         this.config = config
         for (const key of Object.keys(this.config.global_vars)) this.server.set(key, this.config.global_vars[key]);
     }
@@ -47,7 +47,7 @@ export default class ServerResource {
         this.routes = this.config.routes;
     }
 
-    parse_routes(router?: express.Router, _routes?: IRoute[]) {
+    parse_routes(router?: express.Router, _routes?: IServerRoute[]) {
         let methods: Record<Methods, Function>;
         if (!router) {
             methods = {
