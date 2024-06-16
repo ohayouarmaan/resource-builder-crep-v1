@@ -5,6 +5,9 @@
         "routes": [
             {
                 "path": "/user",
+                "query": [
+                    { "name": "id", "type": "string" }
+                ],
                 "middlewares": [
                     "isSignedIn",
                     "giveUserDetails"
@@ -18,6 +21,9 @@
                 "routes": [
                     {
                         "path": "/user",
+                        "query": [
+                            { "name": "id", "type": "string" }
+                        ],
                         "middlewares": [
                             "isSignedIn",
                             "giveUserDetails"
