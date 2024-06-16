@@ -1,0 +1,30 @@
+{
+    "resource_type": "express",
+    "config": {
+        "port": 3003,
+        "routes": [
+            {
+                "path": "/user",
+                "middlewares": [
+                    "isSignedIn",
+                    "giveUserDetails"
+                ]
+            },
+            {
+                "path": "/admin",
+                "middlewares": [
+                    "isAdmin"
+                ],
+                "routes": [
+                    {
+                        "path": "/user",
+                        "middlewares": [
+                            "isSignedIn",
+                            "giveUserDetails"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
