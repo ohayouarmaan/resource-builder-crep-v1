@@ -10,18 +10,24 @@ interface IMongoDBConfig {
 }
 
 export default class MongodbDependency extends Dependency<IMongoDBConfig, mongoose.Connection> {
-    constructor(config: IMongoDBConfig, comment?: string) {
+    constructor(config: IMongoDBConfig, id: string, comment?: string) {
         super({
             type: "mongodb",
             comment: comment,
-            config
+            config,
+            id,
         });
     }
 
     async connect() {
         this.create_core(async (_x): Promise<mongoose.Connection> => {
-            const db  = await mongoose.connect(`mongodb://${this.config.username}:${this.config.password}@${this.config.host}:${this.config.port}/${this.config.db_name}`);
-            return db.connection;
+            try{
+                const db  = await mongoose.connect(`mongodb://${this.config.username}:${this.config.password}@${this.config.host}:${this.config.port}/${this.config.db_name}`);
+                return db.connection;
+            } catch(e) {
+                console.error(e);
+                throw new Error((e as Error).message);
+            }
         });
     }
 
