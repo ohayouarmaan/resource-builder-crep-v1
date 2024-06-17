@@ -36,16 +36,11 @@
             "type": "string"
           }
         ],
-        "middlewares": [
-          "isSignedIn",
-          "giveUserDetails"
-        ]
+        "middlewares": ["isSignedIn", "giveUserDetails"]
       },
       {
         "path": "/admin",
-        "middlewares": [
-          "isAdmin"
-        ],
+        "middlewares": ["isAdmin"],
         "routes": [
           {
             "path": "/user",
@@ -56,10 +51,7 @@
               }
             ],
             "method": "GET",
-            "middlewares": [
-              "isSignedIn",
-              "giveUserDetails"
-            ]
+            "middlewares": ["isSignedIn", "giveUserDetails"]
           }
         ]
       }

@@ -8,11 +8,7 @@ class Project {
   public resource: Resource;
   public logic: Record<string, Logic>;
 
-  constructor(
-    name: string,
-    resource: Resource,
-    logic: Record<string, Logic>,
-  ) {
+  constructor(name: string, resource: Resource, logic: Record<string, Logic>) {
     this.name = name;
     this.resource = resource;
     this.logic = logic;
@@ -37,7 +33,7 @@ class Project {
           resource = JSON.parse(fileContent);
         } else {
           const _logic = JSON.parse(fileContent) as Record<string, string>;
-          for(const logic_name of Object.keys(_logic)) {
+          for (const logic_name of Object.keys(_logic)) {
             logic[logic_name] = new Logic(_logic[logic_name]);
           }
         }
@@ -54,7 +50,7 @@ class Project {
   }
 
   async runResource() {
-    this.resource.run(this.logic)
+    this.resource.run(this.logic);
   }
 }
 

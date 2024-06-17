@@ -1,6 +1,6 @@
 import InternalResource from "./internal_resource";
 import Logic from "./logic";
-import { IServerConfig } from "./server";
+import { IServerConfig } from "./plugins/server";
 
 class Resource {
   public type: string;
@@ -22,7 +22,7 @@ class Resource {
 
   async createServerResource(logic: Record<string, Logic>) {
     // using this will result in lazily loading a resource
-    const { default: ServerClass } = await import("./server");
+    const { default: ServerClass } = await import("./plugins/server");
     const server = new ServerClass(logic);
     server.register_config(this.config as unknown as IServerConfig);
     server.run();
