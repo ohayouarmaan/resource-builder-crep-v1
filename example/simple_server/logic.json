@@ -1,5 +1,5 @@
 {
   "isSignedIn": "function isSignedIn(req, res, next) {next()}",
   "isAdmin": "function isAdmin(req, res, next) {next()}",
-  "giveUserDetails": "function giveUserDetails(req, res, next) { return { name: 'something', id: req.query.id } }"
+  "giveUserDetails": "function giveUserDetails(req, res, next) { return res.json({ name: 'something', id: req.params.id }) }"
 }

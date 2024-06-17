@@ -20,6 +20,7 @@
           {
             "path": "/user",
             "params": [{ "name": "id", "type": "string" }],
+            "method": "GET",
             "middlewares": ["isSignedIn", "giveUserDetails"]
           }
         ]

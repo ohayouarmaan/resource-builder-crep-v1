@@ -31,6 +31,7 @@ class Resource {
     const { default: ServerClass } = await import("./server");
     const server = new ServerClass(logic);
     server.register_config(this.config as unknown as IServerConfig);
+    server.run();
   }
 }
 

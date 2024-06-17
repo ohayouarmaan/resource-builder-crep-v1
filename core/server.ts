@@ -1,4 +1,3 @@
-import assert from "assert";
 import express, { Request, Response } from "express";
 import Logic from "./logic";
 
@@ -12,7 +11,7 @@ enum Methods {
 
 export interface IServerRoute {
     path: string;
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | null;
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
     params: {
         [k: string]: string
     }[];
@@ -31,6 +30,7 @@ export default class ServerResource {
     public routes: IServerRoute[] = [];
     private config: IServerConfig | undefined;
     private logic: Record<string, Logic>;
+    private routes_registered: boolean = false;
 
     constructor(logic: Record<string, Logic>) {
         this.server = express();
@@ -44,6 +44,7 @@ export default class ServerResource {
     }
 
     parse_routes(router?: express.Router, _routes?: IServerRoute[]) {
+        this.routes_registered = true;
         let methods: Record<Methods, Function>;
         if (!router) {
             methods = {
@@ -64,21 +65,60 @@ export default class ServerResource {
         }
         const routes = _routes || this.routes;
         routes.forEach(route => {
-            let route_name = `/${route.path}`;
-            for(const params of Object.keys(route.params)) {
-                route_name += `/:${params}`
+            let route_name = `${route.path}`;
+            if(Object.keys(route).includes("params")){
+                for(const params of route.params) {
+                    route_name += `/:${params.name}`
+                }
             }
             route_name = route_name + "/";
-
-            if (route.routes.length != 0 && route.method != null) {
+            if (!Object.keys(route).includes("routes") && Object.keys(route).includes("method")) {
                 const logic_functions: ((req: Request, res: Response) => any)[] = [];
                 for (const logic_name of Object.keys(this.logic)) {
                     logic_functions.push(this.logic[logic_name].get_logic() as ((req: Request, res: Response) => any));
                 }
-                methods[route.method](route_name, ...logic_functions);
+                switch (route.method) {
+                    case Methods.GET:
+                        if(router){
+                            router['get'](route_name, ...logic_functions)
+                        }
+                        this.server["get"](route_name, ...logic_functions);
+                        break;
+                
+                    case Methods.POST:
+                        if(router){
+                            router['post'](route_name, ...logic_functions)
+                        }
+                        this.server["post"](route_name, ...logic_functions);
+                        break;
+
+                    case Methods.PUT:
+                        if(router){
+                            router['put'](route_name, ...logic_functions)
+                        }
+                        this.server["put"](route_name, ...logic_functions);
+                        break;
+
+                    case Methods.PATCH:
+                        if(router){
+                            router['patch'](route_name, ...logic_functions)
+                        }
+                        this.server["patch"](route_name, ...logic_functions);
+                        break;
+
+                    case Methods.DELETE:
+                        if(router){
+                            router['delete'](route_name, ...logic_functions)
+                        }
+                        this.server["delete"](route_name, ...logic_functions);
+                        break;
+                
+                    default:
+                        console.error("method not allowed");
+                }
             } else {
                 const _router = express.Router();
-                this.parse_routes(router, route.routes);
+                this.parse_routes(_router, route.routes);
                 if(router != undefined) {
                     router.use(route_name, _router)
                 } else {
@@ -89,6 +129,7 @@ export default class ServerResource {
     }
 
     run() {
+        if(!this.routes_registered) this.parse_routes();
         if(this.config != undefined){
             const port: number = typeof this.config.port == "string" ? parseInt(this.config.port) : this.config.port
             this.server.listen(port, '0.0.0.0', () => {
