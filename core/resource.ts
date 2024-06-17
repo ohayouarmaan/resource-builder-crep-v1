@@ -1,9 +1,6 @@
+import InternalResource from "./internal_resource";
 import Logic from "./logic";
 import { IServerConfig } from "./server";
-
-abstract class InternalResource {
-  //TODO: DECIDE ON PROPERTIES WHICH A RESOURCE SHOULD HAVE!!
-}
 
 class Resource {
   public type: string;

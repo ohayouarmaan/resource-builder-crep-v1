@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import Logic from "./logic";
+import InternalResource from "./internal_resource";
 
 enum Methods {
     GET = "GET",
@@ -25,7 +26,7 @@ export interface IServerConfig {
     global_vars: Record<string, object>;
 }
 
-export default class ServerResource {
+export default class ServerResource extends InternalResource<IServerConfig> {
     private server: express.Express;
     public routes: IServerRoute[] = [];
     private config: IServerConfig | undefined;
@@ -33,6 +34,7 @@ export default class ServerResource {
     private routes_registered: boolean = false;
 
     constructor(logic: Record<string, Logic>) {
+        super();
         this.server = express();
         this.logic = logic;
     }

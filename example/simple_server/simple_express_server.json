@@ -1,8 +1,28 @@
 {
   "resource_type": "express",
+  "dependencies": [
+    {
+      "type": "mongodb",
+      "comment": "This is supposed to be a depenedency which will be resolved / installed while creation of the main resource and then it can be used in the logic.",
+      "config": {
+        "host": "localhost",
+        "port": "27017",
+        "username": "test",
+        "password": "test@123"
+      }
+    },
+    {
+      "type": "redis",
+      "config": {
+        "host": "localhost",
+        "port": "6379",
+        "username": "test",
+        "password": "test@123"
+      }
+    }
+  ],
   "config": {
     "port": 3003,
-    
     "global_vars": {
       "debug": true
     },
@@ -10,18 +30,36 @@
       {
         "path": "/user",
         "method": "GET",
-        "params": [{ "name": "id", "type": "string" }],
-        "middlewares": ["isSignedIn", "giveUserDetails"]
+        "params": [
+          {
+            "name": "id",
+            "type": "string"
+          }
+        ],
+        "middlewares": [
+          "isSignedIn",
+          "giveUserDetails"
+        ]
       },
       {
         "path": "/admin",
-        "middlewares": ["isAdmin"],
+        "middlewares": [
+          "isAdmin"
+        ],
         "routes": [
           {
             "path": "/user",
-            "params": [{ "name": "id", "type": "string" }],
+            "params": [
+              {
+                "name": "id",
+                "type": "string"
+              }
+            ],
             "method": "GET",
-            "middlewares": ["isSignedIn", "giveUserDetails"]
+            "middlewares": [
+              "isSignedIn",
+              "giveUserDetails"
+            ]
           }
         ]
       }
