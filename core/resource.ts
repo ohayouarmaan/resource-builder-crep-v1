@@ -1,3 +1,4 @@
+import { IDependency } from "../types/core/dependency.types";
 import InternalResource from "./internal_resource";
 import Logic from "./logic";
 import { IServerConfig } from "./plugins/server.plugin";

@@ -1,11 +1,5 @@
 import InternalResource from "./internal_resource";
-
-interface IDependency<C> {
-  type: string;
-  comment?: string;
-  id: string;
-  config: C;
-}
+import { IDependency } from "../types/core/dependency.types";
 
 //TODO: Add an ID field which can be reffered by logic to use this dependency which should be resolved in the Logic class.
 //we can loop through the dependencies required in the logic and add an object which we can bind to the logic function so that the

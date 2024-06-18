@@ -1,5 +1,14 @@
 {
-  "isSignedIn": "function isSignedIn(req, res, next) {next()}",
-  "isAdmin": "function isAdmin(req, res, next) {next()}",
-  "giveUserDetails": "function giveUserDetails(req, res, next) { return res.json({ name: 'something', id: req.params.id }) }"
+  "isSignedIn": {
+    "dependencies": [
+      { "id": "1" }
+    ],
+    "code": "function isSignedIn(req, res, next) {next()}"
+  },
+  "isAdmin": {
+    "code": "function isAdmin(req, res, next) {next()}"
+  },
+  "giveUserDetails": {
+    "code": "function giveUserDetails(req, res, next) { return res.json({ name: 'something', id: req.params.id }) }"
+  }
 }
