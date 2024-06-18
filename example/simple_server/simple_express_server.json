@@ -4,12 +4,13 @@
     {
       "type": "mongodb",
       "comment": "This is supposed to be a depenedency which will be resolved / installed while creation of the main resource and then it can be used in the logic.",
-      "id": "1",
+      "id": "mongodb",
       "config": {
         "host": "localhost",
         "port": "27017",
         "username": "test",
-        "password": "test@123"
+        "password": "test@123",
+        "db_name": "test"
       }
     },
     {

@@ -20,6 +20,10 @@ export default class Dependency<C, T> {
     this.comment = dependency.comment;
   }
 
+  async connect() {
+    throw new Error("You must override this in the main dependency class");
+  }
+
   // Registers the parent resource, just in case we might need to use it somehow.
   register_parent<IC>(parent: InternalResource<IC>) {
     this.parent = parent;

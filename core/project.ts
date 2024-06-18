@@ -3,6 +3,8 @@ import Resource from "./resource";
 import Logic from "./logic";
 import path from "node:path";
 import { IDependency, ILogicDependency } from "../types/core/dependency.types";
+import Dependency from "./dependency";
+import InternalDependency from "./internal_dependency";
 
 class Project {
   public name: string;
@@ -34,6 +36,7 @@ class Project {
   static async readDirectory(projectPath: string) {
     try {
       const files = await readdir(projectPath);
+      const created_dependencies = await readdir(path.resolve(__dirname, "./dependencies"));
       let resource:
         | {
             resource_type: string;
@@ -61,12 +64,27 @@ class Project {
             code: string;
             dependencies?: ILogicDependency[]
           }>;
+          const resolved_dependencies: Record<string, Dependency<unknown, unknown>> = {};
           for (const logic_name of Object.keys(_logic)) {
-            const current_dependencies: IDependency<unknown>[] = [];
+            const current_dependencies: Record<string, Dependency<unknown, unknown>> = {};
             _logic[logic_name].dependencies?.map(dep => {
-              resource?.dependencies.map(resource_dependency => {
+              resource?.dependencies.map(async resource_dependency => {
+                if(!Object.keys(resolved_dependencies).includes(resource_dependency.id)) {
+                  for(const created_dependency of created_dependencies) {
+                    if(created_dependency.split(".")[0] == resource_dependency.type) {
+                      const { default: InitializeDependency } : {
+                        default: typeof Dependency & (new (...args: any[]) => InternalDependency)
+                      } = await import(path.resolve(__dirname, "./dependencies", created_dependency));
+
+                      const d = new InitializeDependency(resource_dependency);
+                      await d.connect();
+                      resolved_dependencies[resource_dependency.id] = d;
+                    }
+
+                  }
+                }
                 if(dep.id == resource_dependency.id) {
-                  current_dependencies.push(resource_dependency);
+                  current_dependencies[resource_dependency.id] = (resolved_dependencies[resource_dependency.id]);
                 }
               })
             })

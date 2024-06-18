@@ -1,9 +1,9 @@
 {
   "isSignedIn": {
     "dependencies": [
-      { "id": "1" }
+      { "id": "mongodb" }
     ],
-    "code": "function isSignedIn(req, res, next) {console.log(this.dependencies);next()}"
+    "code": "function isSignedIn(req, res, next) {console.log(this.dependencies);\nnext()}"
   },
   "isAdmin": {
     "code": "function isAdmin(req, res, next) {next()}"

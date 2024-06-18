@@ -1,18 +1,18 @@
 import { IDependency, ILogicDependency } from "../types/core/dependency.types";
-import Project from "./project";
+import Dependency from "./dependency";
 
 class Logic {
   public logic_code: string;
   public logic_function: Function | undefined;
   public dependenciesId?: ILogicDependency[];
-  public dependencies?: IDependency<unknown>[];
+  public dependencies?: Record<string, Dependency<unknown, unknown>>;
 
   constructor(logic_code: string, dependencies?: ILogicDependency[]) {
     this.logic_code = logic_code;
     this.dependenciesId = dependencies;
   }
 
-  public injectDependencies(dependencies: IDependency<unknown>[]) {
+  public injectDependencies(dependencies: Record<string, Dependency<unknown, unknown>>) {
     this.dependencies = dependencies;
   }
 
