@@ -49,14 +49,21 @@ class Project {
         );
         if (file != "logic.json") {
           resource = JSON.parse(fileContent);
-        } else {
+        }
+      }
+      for(const file of files) {
+        const fileContent = await readFile(
+          path.resolve(projectPath, file),
+          "utf-8",
+        );
+        if(file == "logic.json") {
           const _logic = JSON.parse(fileContent) as Record<string, {
             code: string;
-            dependencies: ILogicDependency[]
+            dependencies?: ILogicDependency[]
           }>;
           for (const logic_name of Object.keys(_logic)) {
             const current_dependencies: IDependency<unknown>[] = [];
-            _logic[logic_name].dependencies.map(dep => {
+            _logic[logic_name].dependencies?.map(dep => {
               resource?.dependencies.map(resource_dependency => {
                 if(dep.id == resource_dependency.id) {
                   current_dependencies.push(resource_dependency);
@@ -79,6 +86,7 @@ class Project {
       
       return p;
     } catch (e) {
+      console.error(e);
       throw new Error("No such project exists.");
     }
   }

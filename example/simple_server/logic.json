@@ -3,7 +3,7 @@
     "dependencies": [
       { "id": "1" }
     ],
-    "code": "function isSignedIn(req, res, next) {next()}"
+    "code": "function isSignedIn(req, res, next) {console.log(this.dependencies);next()}"
   },
   "isAdmin": {
     "code": "function isAdmin(req, res, next) {next()}"

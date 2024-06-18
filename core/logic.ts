@@ -19,13 +19,11 @@ class Logic {
   get_logic(): Function {
     if (this.logic_function != undefined) return this.logic_function;
     try {
-      const func = new Function(`return (${this.logic_code})`)();
-      //TODO: Loop over the dependencies and somehow get the dependencies from the parent and make an object which contains
-      //all the dependencies which then can be used to bind this function to, so that the logic code can use it.
-      this.dependencies?.map(dependency => {
-        // fetch the dependency from the resource somehow
-
-      });
+      let func: Function = new Function(`return (${this.logic_code})`)();
+      const objectToBind = {
+        dependencies: this.dependencies,
+      }
+      func = func.bind(objectToBind);
       this.logic_function = func;
       return func;
     } catch (error) {
