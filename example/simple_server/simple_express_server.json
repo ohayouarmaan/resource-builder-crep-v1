@@ -8,9 +8,9 @@
       "config": {
         "host": "localhost",
         "port": "27017",
-        "username": "test",
-        "password": "test@123",
-        "db_name": "test"
+        "username": "admin",
+        "password": "admin",
+        "db_name": "yolo-assignment"
       }
     },
     {

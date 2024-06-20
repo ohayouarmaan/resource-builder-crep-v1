@@ -42,13 +42,39 @@ export default class MongodbDependency extends Dependency<
     });
   }
 
+  //TODO: Add multiple helper functions like fetch all documents, fetch a certain document, use filters etc.
+  //Example: fetching a certain document from it's specific field should be using filters this.core.collections[collection_name].find(filter)
+  //kind of like the above example, not exactly tho
   async get_collection(collection_name: string) {
     if (this.core) {
-      return this.core.collections[collection_name];
+      const collection = await this.core.db.collection(collection_name);
+      return collection;
     } else {
       await this.connect();
       // using the not null constraint here because we are connecting above and the core should be filled with the required details.
       return this.core!.collections[collection_name];
+    }
+  }
+
+  async fetch_all(collection_name: string) {
+    if (this.core) {
+      const collection = await this.core.db.collection(collection_name);
+      const cursor = await collection.find({});
+      const docs = [];
+      for await (const doc of cursor) {
+        docs.push(doc);
+      }
+      return docs;
+    } else {
+      await this.connect();
+      // using the not null constraint here because we are connecting above and the core should be filled with the required details.
+      const collection = await this.core!.db.collection(collection_name);
+      const cursor = await collection.find({});
+      const docs = [];
+      for await (const doc of cursor) {
+        docs.push(doc);
+      }
+      return docs;
     }
   }
 }

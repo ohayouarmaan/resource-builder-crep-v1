@@ -75,7 +75,6 @@ class Project {
                       const { default: InitializeDependency } : {
                         default: typeof Dependency & (new (...args: any[]) => InternalDependency)
                       } = await import(path.resolve(__dirname, "./dependencies", created_dependency));
-
                       const d = new InitializeDependency(resource_dependency);
                       await d.connect();
                       resolved_dependencies[resource_dependency.id] = d;

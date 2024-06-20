@@ -3,7 +3,7 @@
     "dependencies": [
       { "id": "mongodb" }
     ],
-    "code": "function isSignedIn(req, res, next) {console.log(this.dependencies);\nnext()}"
+    "code": "async function isSignedIn(req, res, next) { try { const collection = await this.dependencies.mongodb.get_collection('cronjobs'); const cursor = await collection.find({}); const docs = []; for await (const doc of cursor) { docs.push(doc); } await cursor.close(); return res.json(docs); } catch (e) { console.error(e); } }"
   },
   "isAdmin": {
     "code": "function isAdmin(req, res, next) {next()}"

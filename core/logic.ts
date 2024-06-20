@@ -27,6 +27,7 @@ class Logic {
       this.logic_function = func;
       return func;
     } catch (error) {
+      console.error(error);
       throw new Error((error as Error).message);
     }
   }
